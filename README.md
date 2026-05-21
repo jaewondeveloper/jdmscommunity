@@ -6,7 +6,7 @@
 
 **`index.html`을 더블클릭**하거나, 탐색기에서 `index.html` → 우클릭 → **연결 프로그램** → Chrome/Edge 로 열면 됩니다.
 
-Python 서버는 필요 없습니다. 페이지 이동 시 Google 스타일 로딩 애니메이션이 표시됩니다.
+Python 서버는 필요 없습니다. 페이지 이동 시 로딩 스피너가 표시됩니다.
 
 ## UI
 
@@ -29,8 +29,8 @@ jdms community/
 ├── js/
 │   ├── storage.js
 │   ├── components.js
-│   └── pages/        ← 페이지별 스크립트
-├── index.html        ← 여기서 시작
+│   └── pages/
+├── index.html
 ├── board.html
 ├── class-board.html
 ├── post.html

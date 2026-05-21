@@ -1,4 +1,9 @@
 (function () {
+  if (!JDMSAuth.isLoggedIn()) {
+    location.href = "login.html?next=write.html";
+    return;
+  }
+
   JDMS.initShell("community", "write");
   document.getElementById("footer").innerHTML = JDMS.renderFooter();
 
@@ -28,18 +33,19 @@
     e.preventDefault();
     if (window.JDMSLoader) window.JDMSLoader.show();
 
-    var post = {
-      id: JDMS.generateId(),
+    JDMS.addPost({
       title: document.getElementById("title").value.trim(),
       content: document.getElementById("content").value.trim(),
-      author: document.getElementById("author").value.trim(),
       category: document.getElementById("category").value,
       classId: boardType.value === "class" ? classSelect.value : null,
-      createdAt: new Date().toISOString(),
-      comments: [],
-    };
-
-    JDMS.addPost(post);
-    location.href = "post.html?id=" + post.id;
+    })
+      .then(function (post) {
+        location.href = "post.html?id=" + post.id;
+      })
+      .catch(function (err) {
+        if (window.JDMSLoader) window.JDMSLoader.hide();
+        alert(err.message || "등록 실패");
+        if (err.status === 401) location.href = "login.html";
+      });
   });
 })();

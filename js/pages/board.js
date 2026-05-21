@@ -25,21 +25,22 @@
     .join("");
 
   function renderList() {
-    var posts = JDMS.getPosts().filter(function (p) {
-      return !p.classId;
-    });
-    if (activeCategory !== "all") {
-      posts = posts.filter(function (p) {
-        return p.category === activeCategory;
+    JDMS.getPosts({ category: activeCategory })
+      .then(function (posts) {
+        if (posts.length === 0) {
+          listEl.innerHTML =
+            '<li class="empty-state"><p>게시글이 없습니다.</p>' +
+            (JDMSAuth.isLoggedIn()
+              ? '<a class="btn btn--primary" href="write.html">글 작성하기</a>'
+              : '<a class="btn btn--primary" href="login.html">로그인</a>') +
+            "</li>";
+          return;
+        }
+        listEl.innerHTML = posts.map(JDMS.renderPostListItem).join("");
+      })
+      .catch(function () {
+        listEl.innerHTML = '<li class="empty-state"><p>불러오기 실패</p></li>';
       });
-    }
-
-    if (posts.length === 0) {
-      listEl.innerHTML =
-        '<li class="empty-state"><p>게시글이 없습니다.</p><a class="btn btn--primary" href="write.html">글 작성하기</a></li>';
-      return;
-    }
-    listEl.innerHTML = posts.map(JDMS.renderPostListItem).join("");
   }
 
   tabsEl.addEventListener("click", function (e) {

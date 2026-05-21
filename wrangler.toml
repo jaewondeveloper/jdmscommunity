@@ -1,0 +1,12 @@
+# Cloudflare Workers — API 전용 (페이지는 GitHub Pages)
+name = "jdms-community-api"
+main = "worker/src/index.js"
+compatibility_date = "2024-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jdms-community"
+database_id = "a1079b63-8212-4eab-997f-eeadb79c6d5c"
+
+[vars]
+FRONTEND_URL = "https://jaewondeveloper.github.io/jdmscommunity"

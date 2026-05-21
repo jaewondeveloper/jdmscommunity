@@ -2,3 +2,11 @@
 Thumbs.db
 desktop.ini
 *.log
+community.db
+auth_sessions.json
+__pycache__/
+*.pyc
+.env
+node_modules/
+.wrangler/
+.dev.vars

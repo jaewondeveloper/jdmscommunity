@@ -1,43 +1,80 @@
 # 중동중학교(JDMS) 커뮤니티
 
-중동중학교 학생·교사를 위한 커뮤니티 홈페이지입니다.
+## 구조 (분리 호스팅)
 
-## 실행 방법 (서버 없이)
+| 역할 | 호스팅 | 비용 |
+|------|--------|------|
+| **페이지** (HTML/CSS/JS) | **GitHub Pages** | 무료 |
+| **API + DB + 로그인** | **Cloudflare Workers + D1** | 무료 티어 |
 
-**`index.html`을 더블클릭**하거나, 탐색기에서 `index.html` → 우클릭 → **연결 프로그램** → Chrome/Edge 로 열면 됩니다.
+PC에서 Python 서버를 켤 필요 없습니다. GitHub에 HTML만 올리고, API는 Cloudflare에서만 돌아갑니다.
 
-Python 서버는 필요 없습니다. 페이지 이동 시 로딩 스피너가 표시됩니다.
+---
 
-## UI
+## 1. GitHub Pages (프론트)
 
-- **Toss 스타일**: 밝은 회색 배경, 흰 카드, **검정 강조 버튼**, 높은 곡률(둥근 사각형)
-- **모바일**: 하단 탭바(홈·게시판·반별·글쓰기), 햄버거 메뉴(드로어), 터치 영역 44px+
+1. 이 폴더를 `jaewondeveloper/jdmscommunity` 에 push
+2. GitHub → **Settings → Pages** → Source: `main` / `/ (root)`
+3. 주소 예: `https://jaewondeveloper.github.io/jdmscommunity/`
 
-## 기능
+### config.js 설정 (필수)
 
-- 홈: 인기글 카드, 최근 게시글, 반별 바로가기
-- 전체 게시판 / 반별 게시판
-- 글쓰기, 댓글
-- 데이터는 브라우저 `localStorage`에 저장
+`js/config.example.js` 를 참고해 `js/config.js` 의 `API_BASE` 를 Cloudflare Worker URL 로 바꿉니다.
 
-## 폴더 구조
-
-```
-jdms community/
-├── assets/jdmslogo.png
-├── css/styles.css
-├── js/
-│   ├── storage.js
-│   ├── components.js
-│   └── pages/
-├── index.html
-├── board.html
-├── class-board.html
-├── post.html
-└── write.html
+```javascript
+window.JDMS_CONFIG = {
+  API_BASE: "https://jdms-community-api.계정.workers.dev",
+};
 ```
 
-## 참고
+모든 HTML은 `config.js` → `api.js` 순으로 불러옵니다.
 
-- 같은 폴더 안의 HTML·JS·이미지 경로를 그대로 쓰므로, **폴더 통째로** 옮겨도 됩니다.
-- 일부 브라우저는 `file://`에서 localStorage를 제한할 수 있습니다. 그때는 Edge/Chrome 최신 버전을 사용하세요.
+---
+
+## 2. Cloudflare Workers (API 서버)
+
+### 무료인가?
+
+- **Workers**: 일 10만 요청 무료
+- **D1** (DB): 읽기/쓰기 무료 한도 넉넉 (소규모 커뮤니티 충분)
+- 카드 등록 없이도 Workers 무료 플랜 사용 가능
+
+### 배포 순서
+
+```bash
+npm install
+npx wrangler login
+npx wrangler d1 create jdms-community
+# wrangler.toml 의 database_id 를 출력된 ID 로 교체
+npm run db:remote
+npx wrangler secret put JWT_SECRET
+npx wrangler secret put RESEND_API_KEY   # 인증 메일 (선택)
+npx wrangler deploy
+```
+
+배포 후 나온 URL (예: `https://jdms-community-api.xxx.workers.dev`) 을 `js/config.js` 에 넣고 GitHub에 다시 push.
+
+### 환경 변수 (Cloudflare 대시보드 또는 secret)
+
+| 이름 | 설명 |
+|------|------|
+| `JWT_SECRET` | JWT 비밀키 |
+| `FRONTEND_URL` | `https://jaewondeveloper.github.io/jdmscommunity` (wrangler.toml 기본값) |
+| `RESEND_API_KEY` | 인증 메일 발송 |
+| `FROM_EMAIL` | 발신 주소 |
+
+---
+
+## 로그인
+
+- `@joongdong.ms.kr` 이메일 인증 링크 (기존 `app.py` 방식 → Worker로 이전)
+- 인증 링크는 **Worker URL** (`/api/auth/verify`) → 완료 후 **GitHub Pages** 로 리다이렉트
+
+---
+
+## 로컬 개발 (선택)
+
+- API만: `npm run dev:api`
+- 프론트: GitHub Pages와 동일하게 정적 파일 열기 (API는 `config.js`를 로컬 Worker URL로)
+
+`server.py` 는 로컬 테스트용이며, 배포에는 사용하지 않습니다.

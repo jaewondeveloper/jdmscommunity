@@ -32,18 +32,20 @@
     labelEl.textContent = JDMS.formatClassLabel(activeClass) + " 게시판";
     writeBtn.href = "write.html?class=" + activeClass;
 
-    var posts = JDMS.getPosts().filter(function (p) {
-      return p.classId === activeClass;
-    });
-
-    if (posts.length === 0) {
-      gridEl.innerHTML =
-        '<div class="empty-state" style="grid-column:1/-1"><p>이 반 게시글이 아직 없습니다.</p><a class="btn btn--primary" href="write.html?class=' +
-        activeClass +
-        '">첫 글 작성하기</a></div>';
-      return;
-    }
-    gridEl.innerHTML = posts.map(JDMS.renderPostCard).join("");
+    JDMS.getPosts({ classId: activeClass })
+      .then(function (posts) {
+        if (posts.length === 0) {
+          gridEl.innerHTML =
+            '<div class="empty-state" style="grid-column:1/-1"><p>이 반 게시글이 없습니다.</p><a class="btn btn--primary" href="write.html?class=' +
+            activeClass +
+            '">첫 글 작성하기</a></div>';
+          return;
+        }
+        gridEl.innerHTML = posts.map(JDMS.renderPostCard).join("");
+      })
+      .catch(function () {
+        gridEl.innerHTML = '<div class="empty-state">불러오기 실패</div>';
+      });
   }
 
   selectEl.addEventListener("click", function (e) {

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>로그인 - 중동중학교 커뮤니티</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading page-login">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+
+  <main class="login-page">
+    <div class="login-card">
+      <img class="login-card__logo" src="assets/jdmslogo.png" alt="중동중학교" />
+      <h1>로그인</h1>
+      <p class="login-card__desc">학교 이메일로 인증 링크를 받습니다.<br />@joongdong.ms.kr 만 사용 가능합니다.</p>
+
+      <div id="login-step-email">
+        <div class="form-group">
+          <label for="login-email">학교 이메일</label>
+          <input class="form-control" id="login-email" type="email" placeholder="name@joongdong.ms.kr" autocomplete="email" />
+        </div>
+        <button type="button" class="btn btn--primary btn--block" id="btn-send-link">인증 메일 보내기</button>
+      </div>
+
+      <div id="login-step-wait" class="login-step-wait" hidden>
+        <p class="login-step-wait__title">메일을 확인해 주세요</p>
+        <p>받은편지함에서 <strong>로그인 완료하기</strong> 버튼을 눌러 주세요.<br />이 창은 자동으로 로그인됩니다.</p>
+        <div class="android-spinner" style="margin:1.5rem auto;">
+          <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+            <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+          </svg>
+        </div>
+        <button type="button" class="btn btn--outline btn--block" id="btn-resend">다시 보내기</button>
+      </div>
+
+      <p class="login-card__error" id="login-error" hidden></p>
+      <a class="btn btn--ghost btn--block" href="index.html" style="margin-top:0.75rem;">홈으로</a>
+    </div>
+  </main>
+
+  <script src="js/loader.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    JDMS.initShell("community", "home");
+    JDMSAuth.bindLoginButton();
+
+    var pollTimer = null;
+    var errorEl = document.getElementById("login-error");
+    var stepEmail = document.getElementById("login-step-email");
+    var stepWait = document.getElementById("login-step-wait");
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.hidden = !msg;
+    }
+
+    function startPoll() {
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(function () {
+        JDMSAuth.pollAuth().then(function (res) {
+          if (res.status === "completed" && res.userData) {
+            clearInterval(pollTimer);
+            JDMSAuth.setUser(res.userData);
+            location.href = "index.html";
+          }
+        });
+      }, 2500);
+    }
+
+    function sendLink() {
+      var email = document.getElementById("login-email").value.trim().toLowerCase();
+      if (!email) {
+        showError("이메일을 입력해 주세요.");
+        return;
+      }
+      showError("");
+      document.getElementById("btn-send-link").disabled = true;
+      JDMSAuth.sendLoginLink(email).then(function (res) {
+        document.getElementById("btn-send-link").disabled = false;
+        if (!res.success) {
+          showError(res.error || "메일 전송에 실패했습니다.");
+          return;
+        }
+        stepEmail.hidden = true;
+        stepWait.hidden = false;
+        startPoll();
+      }).catch(function () {
+        document.getElementById("btn-send-link").disabled = false;
+        showError("API에 연결할 수 없습니다. js/config.js 의 API_BASE(Cloudflare Worker URL)를 확인해 주세요.");
+      });
+    }
+
+    document.getElementById("btn-send-link").addEventListener("click", sendLink);
+    document.getElementById("btn-resend").addEventListener("click", function () {
+      stepWait.hidden = true;
+      stepEmail.hidden = false;
+      if (pollTimer) clearInterval(pollTimer);
+    });
+
+    var fromUrl = JDMSAuth.parseAuthFromUrl();
+    if (fromUrl && fromUrl.token) {
+      JDMSAuth.setUser(fromUrl);
+      history.replaceState(null, "", "login.html");
+      location.href = "index.html";
+    } else if (JDMSAuth.isLoggedIn()) {
+      location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

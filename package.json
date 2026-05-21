@@ -1,0 +1,16 @@
+{
+  "name": "jdms-community",
+  "private": true,
+  "scripts": {
+    "dev:api": "wrangler dev worker/src/index.js",
+    "deploy:api": "wrangler deploy",
+    "db:local": "wrangler d1 execute jdms-community --local --file=./schema.sql",
+    "db:remote": "wrangler d1 execute jdms-community --remote --file=./schema.sql"
+  },
+  "dependencies": {
+    "jose": "^5.9.6"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  }
+}

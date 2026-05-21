@@ -231,15 +231,6 @@
     });
   }
 
-  function bindLoginStub() {
-    var btn = document.getElementById("login-btn");
-    if (btn) {
-      btn.addEventListener("click", function () {
-        alert("로그인 기능은 추후 연동 예정입니다.");
-      });
-    }
-  }
-
   function initShell(navActive, sidebarActive) {
     var navEl = document.getElementById("navbar");
     var sideEl = document.getElementById("sidebar");
@@ -253,7 +244,7 @@
 
     bindDrawer();
     bindSearch();
-    bindLoginStub();
+    if (global.JDMSAuth) global.JDMSAuth.bindLoginButton();
   }
 
   function renderFooter() {

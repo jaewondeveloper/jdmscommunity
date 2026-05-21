@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>커뮤니티 - 중동중학교</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status" aria-label="로딩 중">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+  <div id="drawer-root"></div>
+
+  <div class="app-shell">
+    <div id="sidebar"></div>
+
+    <main class="main-content">
+      <section class="section-block" id="popular">
+        <div class="section-head">
+          <h2>인기글</h2>
+          <p>최근 반응이 좋은 게시글을 모아봤어요.</p>
+        </div>
+        <div class="post-grid" id="popular-posts"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head section-head__row">
+          <div>
+            <h2>최근 게시글</h2>
+            <p>학교 전체·반별 새 소식을 확인하세요.</p>
+          </div>
+          <a class="btn btn--outline btn--sm" href="board.html">더보기</a>
+        </div>
+        <ul class="board-list" id="recent-posts"></ul>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head section-head__row">
+          <div>
+            <h2>반별 게시판</h2>
+            <p>우리 반 이야기만 모아볼 수 있어요.</p>
+          </div>
+          <a class="btn btn--outline btn--sm" href="class-board.html">전체 보기</a>
+        </div>
+        <div class="scroll-round">
+          <div class="post-row" id="class-preview"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="footer"></div>
+  <div id="tab-bar-root"></div>
+
+  <script src="js/loader.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/pages/home.js"></script>
+</body>
+</html>

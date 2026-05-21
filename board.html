@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>전체 게시판 - 중동중학교</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status" aria-label="로딩 중">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+  <div id="drawer-root"></div>
+
+  <div class="app-shell">
+    <div id="sidebar"></div>
+
+    <main class="main-content">
+      <header class="page-head">
+        <h1>전체 게시판</h1>
+        <p>공지, 자유, 질문 등 학교 전체 게시글입니다.</p>
+      </header>
+
+      <div class="toolbar">
+        <div class="filter-tabs" id="category-tabs"></div>
+        <a class="btn btn--primary" href="write.html">글쓰기</a>
+      </div>
+
+      <ul class="board-list" id="post-list"></ul>
+    </main>
+  </div>
+
+  <div id="footer"></div>
+  <div id="tab-bar-root"></div>
+
+  <script src="js/loader.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/pages/board.js"></script>
+</body>
+</html>

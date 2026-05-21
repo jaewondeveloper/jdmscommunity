@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>반별 게시판 - 중동중학교</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status" aria-label="로딩 중">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+  <div id="drawer-root"></div>
+
+  <div class="app-shell">
+    <div id="sidebar"></div>
+
+    <main class="main-content">
+      <header class="page-head">
+        <h1>반별 게시판</h1>
+        <p>우리 반 게시글만 모아서 볼 수 있습니다.</p>
+      </header>
+
+      <div class="class-select" id="class-select"></div>
+
+      <div class="toolbar">
+        <p id="class-label" style="font-weight:700;color:var(--color-text-secondary);font-size:0.9rem;"></p>
+        <a class="btn btn--primary" id="write-class-btn" href="write.html">이 반에 글쓰기</a>
+      </div>
+
+      <div class="post-grid" id="post-grid"></div>
+    </main>
+  </div>
+
+  <div id="footer"></div>
+  <div id="tab-bar-root"></div>
+
+  <script src="js/loader.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/pages/class-board.js"></script>
+</body>
+</html>

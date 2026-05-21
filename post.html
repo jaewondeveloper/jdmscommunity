@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>게시글 - 중동중학교</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status" aria-label="로딩 중">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+  <div id="drawer-root"></div>
+
+  <div class="app-shell">
+    <div id="sidebar"></div>
+
+    <main class="main-content">
+      <div id="post-content"></div>
+
+      <section class="comments-box">
+        <h2>댓글 <span id="comment-count" style="color:var(--color-text-muted);font-weight:500;"></span></h2>
+        <ul class="comment-list" id="comment-list"></ul>
+        <form id="comment-form">
+          <div class="form-group">
+            <label for="comment-author">이름</label>
+            <input class="form-control" id="comment-author" type="text" placeholder="닉네임" required />
+          </div>
+          <div class="form-group">
+            <label for="comment-body">댓글</label>
+            <textarea class="form-control" id="comment-body" placeholder="댓글을 입력하세요" required></textarea>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit">댓글 등록</button>
+        </form>
+      </section>
+
+      <div style="margin-top: 1rem;">
+        <a class="btn btn--outline btn--block" id="back-link" href="board.html">목록으로</a>
+      </div>
+    </main>
+  </div>
+
+  <div id="footer"></div>
+  <div id="tab-bar-root"></div>
+
+  <script src="js/loader.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/pages/post.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>글쓰기 - 중동중학교</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="is-loading page-write">
+  <div id="page-loader" class="page-loader is-active" aria-label="로딩 중">
+    <div class="android-spinner" role="status" aria-label="로딩 중">
+      <svg class="android-spinner__svg" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="android-spinner__arc" cx="24" cy="24" r="20"></circle>
+      </svg>
+    </div>
+  </div>
+
+  <div id="navbar"></div>
+  <div id="drawer-root"></div>
+
+  <div class="app-shell">
+    <div id="sidebar"></div>
+
+    <main class="main-content main-content--write">
+      <header class="page-head">
+        <h1>글쓰기</h1>
+        <p>전체 또는 반별 게시판에 글을 올려보세요.</p>
+      </header>
+
+      <form class="form-card write-form-card" id="write-form">
+        <div class="form-row-mobile">
+          <div class="form-group">
+            <label for="board-type">게시판</label>
+            <select class="form-control" id="board-type" required>
+              <option value="general">전체</option>
+              <option value="class">반별</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="category">카테고리</label>
+            <select class="form-control" id="category" required>
+              <option value="free">자유</option>
+              <option value="notice">공지</option>
+              <option value="qna">질문</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="class-group" style="display: none;">
+          <label for="class-id">반 선택</label>
+          <select class="form-control" id="class-id"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="author">이름</label>
+          <input class="form-control" id="author" type="text" placeholder="닉네임" required autocomplete="nickname" />
+        </div>
+
+        <div class="form-group">
+          <label for="title">제목</label>
+          <input class="form-control" id="title" type="text" placeholder="제목" required />
+        </div>
+
+        <div class="form-group">
+          <label for="content">내용</label>
+          <textarea class="form-control" id="content" placeholder="내용을 입력하세요" required></textarea>
+        </div>
+      </form>
+
+      <div class="write-actions">
+        <a class="btn btn--outline" href="board.html">취소</a>
+        <button class="btn btn--primary" type="submit" form="write-form">등록</button>
+      </div>
+    </main>
+  </div>
+
+  <div id="footer"></div>
+  <div id="tab-bar-root"></div>
+
+  <script src="js/loader.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/pages/write.js"></script>
+</body>
+</html>
